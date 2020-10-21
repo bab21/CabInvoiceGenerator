@@ -4,13 +4,19 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class InvoiceServiceTester {
+	InvoiceGenerator invoiceGenerator = null;
+
+	@Before
+	public void setUp() {
+		invoiceGenerator = new InvoiceGenerator();
+	}
 
 	@Test
 	public void givenDistanceAndTime_ShouldReturnTotalFare() {
-		InvoiceGenerator invoiceGenerator=new InvoiceGenerator();
 		double distance=2.0;
 		int time=5;
 		double fare=invoiceGenerator.calculateFare(distance,time);
@@ -19,7 +25,6 @@ public class InvoiceServiceTester {
 	
 	@Test
 	public void givenLessDistanceOrTimeShouldReturnMinFare() {
-		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
 		double distance = 0.1;
 		int time = 1;
 		double fare = invoiceGenerator.calculateFare(distance, time);
@@ -28,11 +33,11 @@ public class InvoiceServiceTester {
 
 	@Test
 	public void givenMultipleRidesShouldReturnTotalFare() {
-		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-		Ride[] rides = { new Ride(2.0, 5),
-				         new Ride(0.1, 1) };
-		double fare = invoiceGenerator.calculateFare(rides);
-		Assert.assertEquals(30, fare, 0.0);
+		Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+		InvoiceSummary invoiceSummary = invoiceGenerator.calculateFare(rides);
+		InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+		Assert.assertEquals(expectedSummary, invoiceSummary);
 	}
+
 
 }
