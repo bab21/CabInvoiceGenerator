@@ -2,15 +2,15 @@ package com.capgemini.cabinvoicegenerator;
 
 public class InvoiceSummary {
 	private int numOfRides;
+	private Object averageFare;
 	private double totalFare;
-	private double averageFare;
-	
+
 	public InvoiceSummary(int numOfRides, double totalFare) {
 		this.numOfRides = numOfRides;
 		this.totalFare = totalFare;
 		this.averageFare = this.totalFare / this.numOfRides;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -20,8 +20,15 @@ public class InvoiceSummary {
 		if (getClass() != obj.getClass())
 			return false;
 		InvoiceSummary other = (InvoiceSummary) obj;
-		if(other.numOfRides==this.numOfRides && this.totalFare==other.totalFare && this.averageFare==other.averageFare)
-			return true;
-		else return false;
+		if (averageFare == null) {
+			if (other.averageFare != null)
+				return false;
+		} else if (!averageFare.equals(other.averageFare))
+			return false;
+		if (numOfRides != other.numOfRides)
+			return false;
+		if (Double.doubleToLongBits(totalFare) != Double.doubleToLongBits(other.totalFare))
+			return false;
+		return true;
 	}
 }
